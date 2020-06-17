@@ -1,10 +1,13 @@
+// Functions that are gonna be used in the simulations
+
+// This function rotates the direction of the velocity by an angle
 function rot(v, theta) {
     return [v[0] * Math.cos(theta) - v[1] * Math.sin(theta), v[0] * Math.sin(theta) + v[1] * Math.cos(theta)];
 }
 
-
+// This function changes the velocities of the particles simulating a elastic collision
 function elastic(p1, p2) {
-    // distances
+    // calculates the distances between the particles
     var dx = p1.pos.x - p2.pos.x;
     var dy = p1.pos.y - p2.pos.y;
     var dSq = dx ** 2 + dy ** 2;
@@ -31,4 +34,10 @@ function elastic(p1, p2) {
             p2.vel.y -= wP2 * yCollision;
         }
     }
+}
+
+// This funtion creates a soap particle and adds it to the soaps array
+function mousePressed() {
+	nSoaps++
+	soaps.push(new Cell(mouseX - width/2, mouseY - height/2, "S"))
 }

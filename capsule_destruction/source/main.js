@@ -1,27 +1,34 @@
-var nPart = 0;
-var nCap = 18;
-var nSoaps = 0;
-var nDNA = 100;
-var angle = 360/nCap
+// Global variables to define the simulation
 
-var nFree = 0;
+// Variables involving the virus capsule
+var nCap = 18;                              // number of proteins forming the capsule
+var angle = 360/nCap;                       // angle between the different proteins 
+var rCell = 150;                            // radii of the virus
+var radiC = 2 * Math.PI * rCell / nCap;     // radii of the protein calculated so the touch each other
+var cells = [];                             // empty array to contain all the proteins in the capsule
 
-var iniVel = 1;
+// Variables involving the virus DNA particles
+var nDNA = 100;                             // number of DNA particles inside the virus
+var radiD = 10;                             // radii of the DNA particles
+var dnas = [];                              // empty array to contain all the dnas
 
-var rCell = 150;
-var radiS = 10;
-var radiD = 10;
-var radiC = 2 * Math.PI * rCell / nCap;
+// Variables involving the soap particles
+var nSoaps = 0;                             // initial number of soap particles
+var radiS = 10;                             // radii of the soap particles
+var soaps = [];                             // empty array to contain all the soap particles
 
-var cells = [];
-var soaps = [];
-var dnas = [];
+// Other variables
+var nFree = 0;                              // number of proteins with a soap attached
+var iniVel = 1;                             // initial velocity magnitude
+
+
+// Setting up the simulation
 
 function setup() {
     createCanvas(1000, 500);
-    background(0);
 
-    // Creation of the capside of the virus
+    // Creation of the capsule of the virus
+    // it creates a circunference of nCap proteins
     for (var i = 0; i < nCap; i++) {
     	angleMode(DEGREES);
 	    var x1 = rCell * cos(angle * i);
@@ -30,33 +37,25 @@ function setup() {
    		cells.push(new Cell(x1,y1,"C", angle * i));
     }
 
+    // Creation of the DNA inside the virus
+    // it creates nDNA particles in a random position inside the virus
     for (var i = 0; i < nDNA; i++) {
-    	var rdna = random(0, rCell - radiD * 10);
-    	var angledna = random(0,360);
-	    var xdna = rdna * cos(angledna);
+    	var rdna = random(0, rCell - radiD * 10);   // sets a random radii between two values
+    	var angledna = random(0,360);               // sets a random angle between 0 and 360
+        // coordinates from polar to cartesian
+	    var xdna = rdna * cos(angledna);            
 	    var ydna = rdna * sin(angledna);
     	dnas.push(new Cell(xdna, ydna, "D", 0))
     }
 }
 
+// Drawing loop
+
 function draw() {
 	background(128, 197, 222);
-	translate(width/2, height/2);
-	
-	// Shows the capside of the virus
-	//for (var i = 0; i < cells.length; i++) {
-	//	cells[i].edges();
-	//	cells[i].move();
-	//	cells[i].show();
-	//}
+	translate(width/2, height/2); // This is needed so we have the (0,0) in the middle of the canvas
 
-	//for (var i = 0; i < dnas.length; i++) {
-	//	dnas[i].edges();
-	//	dnas[i].move();
-	//	dnas[i].show();
-	//}
-
-    // checks if the soaps have touched the cells in the capside
+    // draws the soap particles and updates their coordinates
     for (var i = 0; i < soaps.length; i++) {
         if (soaps[i].free) {
             soaps[i].update(soaps, cells, i);
@@ -69,10 +68,11 @@ function draw() {
         }
     }
 
+    // draws the dna particles and updates their coordinates
     for (i = 0; i < dnas.length; i++) {
         for (j = 0; j < cells.length; j++) {
             if (i != j) {
-                elastic(dnas[i], cells[j]);
+                elastic(dnas[i], cells[j]);     // elastic collision between particles
             }
         }
         dnas[i].edges();
@@ -82,7 +82,7 @@ function draw() {
     }
 
 
-    // checks if cells have collisionned with another one and changes velocities
+    // draws the proteins and updates their coordinates if a soap has already touched any of them
     for (i = 0; i < cells.length; i++) {
         for (j = 0; j < cells.length; j++) {
             if (i != j) {
@@ -95,14 +95,5 @@ function draw() {
         cells[i].osc();
        	cells[i].show();
     }
-
-
-
-
-
 }
 
-function mousePressed() {
-	nSoaps++
-	soaps.push(new Cell(mouseX - width/2, mouseY - height/2, "S"))
-}

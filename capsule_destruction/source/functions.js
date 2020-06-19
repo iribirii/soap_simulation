@@ -5,7 +5,7 @@ function rot(v, theta) {
     return [v[0] * Math.cos(theta) - v[1] * Math.sin(theta), v[0] * Math.sin(theta) + v[1] * Math.cos(theta)];
 }
 
-// This function changes the velocities of the particles simulating a elastic collision
+// This function changes the velocities of the particles simulating an elastic collision
 function elastic(p1, p2) {
     // calculates the distances between the particles
     var dx = p1.pos.x - p2.pos.x;

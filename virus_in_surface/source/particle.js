@@ -20,7 +20,7 @@ class Particle {
         } else if (this.t == "V") {
             this.vel = createVector(0, -1);
             this.color = 'rgb(0, 255, 0)';
-            this.r = radiD;
+            this.r = radiV;
             this.free = false;
         }
 

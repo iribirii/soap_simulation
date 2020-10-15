@@ -1,0 +1,33 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-weight: normal;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #000000, #aaaaaa);
+}
+
+.banner {
+    background-color: #ffffff;
+    height: 10vmin;
+    width: 100vmin;
+    justify-content: center;
+    align-content: center;
+}
+
+#water-tank {
+    background-color: #00aaff;
+    height: 60vmin;
+    width: 100vmin;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
